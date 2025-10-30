@@ -130,7 +130,6 @@ def nova_ordem_servico():
         else:
             descricao = input('Descricao: ')
             data_abertura = input('Data abertura: ')
-            status = input('Status: ')
             cliente = input('Cliente: ')
             tecnico = input('Tecnico: ')
             sleep(1)
