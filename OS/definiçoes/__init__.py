@@ -20,6 +20,7 @@ def menu():
               '10-Ver Itens OS\n'
               '11-Apagar Clientes\n'
               '12-Apagar Serviço\n'
+              '13-Apagar Técnico\n'
               '0-Sair ')
 
         try:
@@ -52,6 +53,8 @@ def menu():
             apagar_cliente()
         elif opcoes == 12:
             apagar_servico()
+        elif opcoes == 13:
+            apagar_tecnico()
         elif opcoes == 0:
             print(linha())
             erro('ENCERRANDO PROGRAMA...')
@@ -210,4 +213,17 @@ def apagar_servico():
         if pergunta_continuar('Deseja apagar outro serviço? [S/N]: ') == 'n':
             break
 
+
+def apagar_tecnico():
+    while True:
+        try:
+            id_tecnico = int(input('Digite o ID do Técnico que deseja apagar: '))
+            operadores.deletar_tecnico(id_tecnico)
+        except ValueError:
+            erro('Digite apenas números inteiros!')
+        except Exception as e:
+            erro(f'Erro ao excluir técnico: {e}')
+
+        if pergunta_continuar('Deseja apagar outro técnico? [S/N]: ') == 'n':
+            break
 
