@@ -294,7 +294,7 @@ def atualizar_ordens_servico(id_os,cliente_id,tecnico_id,descricao,data_conclusa
     cur = con.cursor()
 
     try:
-        cur.execute('''UPDATE servicos
+        cur.execute('''UPDATE ordens_servico
                         SET cliente_id = ?, tecnico_id = ?, descricao = ?,data_conclusao = ?
                     WHERE id = ?''',(cliente_id, tecnico_id, descricao, data_conclusao,id_os))
         con.commit()
@@ -332,7 +332,7 @@ def atualizar_item_os(id_item, os_id, servico_id, quantidade, valor_unitario):
     cur = con.cursor()
 
     try:
-        cur.execute('''UPDATE itens
+        cur.execute('''UPDATE itens_os
                         SET os_id = ?, servico_id = ?,quantidade = ?,valor_unitario = ?
                         WHERE id = ?''',(os_id, servico_id, quantidade, valor_unitario, id_item))
         con.commit()
@@ -388,7 +388,7 @@ def deletar_ordem_servico(id_ordem_servico):
     cur = con.cursor()
 
     try:
-        cur.execute('''DELETE FROM ordem_servico WHERE id = ?''', (id_ordem_servico,))
+        cur.execute('''DELETE FROM ordens_servico WHERE id = ?''', (id_ordem_servico,))
         con.commit()
         if cur.rowcount > 0:
             print(f'🗑️ Ordem de serviço ID {id_ordem_servico} excluído com sucesso!')
@@ -421,7 +421,7 @@ def deletar_item_os(id_item_os):
     cur = con.cursor()
 
     try:
-        cur.execute('''DELETE FROM iten_os WHERE id = ?''', (id_item_os,))
+        cur.execute('''DELETE FROM itens_os WHERE id = ?''', (id_item_os,))
         con.commit()
         if cur.rowcount > 0:
             print(f'🗑️ Itens OS ID {id_item_os} excluído com sucesso!')

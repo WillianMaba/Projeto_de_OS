@@ -8,7 +8,7 @@ def criar_tabela():
 
 
     cur.execute('''CREATE TABLE IF NOT EXISTS clientes (
-            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            id INTEGER NOT NULL PRIMARY KEY,
             nome TEXT NOT NULL,
             telefone TEXT,
             email TEXT,
@@ -17,7 +17,7 @@ def criar_tabela():
     ''')
 
     cur.execute('''CREATE TABLE IF NOT EXISTS tecnicos (
-            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            id INTEGER NOT NULL PRIMARY KEY,
             nome TEXT NOT NULL,
             telefone TEXT,
             especialidade TEXT,
@@ -26,7 +26,7 @@ def criar_tabela():
     ''')
 
     cur.execute('''CREATE TABLE IF NOT EXISTS ordens_servico (
-             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+             id INTEGER NOT NULL PRIMARY KEY,
              cliente_id INTEGER NOT NULL,
              tecnico_id INTEGER NOT NULL,
              descricao TEXT NOT NULL,
@@ -38,7 +38,7 @@ def criar_tabela():
     ''')
 
     cur.execute('''CREATE TABLE IF NOT EXISTS servicos (
-             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+             id INTEGER NOT NULL PRIMARY KEY,
              nome TEXT NOT NULL,
              descricao TEXT,
              valor REAL NOT NULL
@@ -46,7 +46,7 @@ def criar_tabela():
     ''')
 
     cur.execute('''CREATE TABLE IF NOT EXISTS itens_os (
-             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+             id INTEGER NOT NULL PRIMARY KEY,
              os_id INTEGER NOT NULL,
              servico_id INTEGER NOT NULL,
              quantidade INTEGER DEFAULT 1,

@@ -1,5 +1,6 @@
 from OS.Interface import *
 from time import sleep
+from OS.database import operadores, tabelasdb, conexao
 
 
 def menu():
@@ -42,11 +43,11 @@ def menu():
         elif opcoes == 7:
             consulta_tecnico()
         elif opcoes == 8:
-            consulta_servico()
+            consulta_os()
         elif opcoes == 9:
-            consulta_item_os()
+            consulta_servico()
         elif opcoes == 10:
-            consulta_cliente()
+            consulta_item_os()
         elif opcoes == 11:
             apagar_cliente()
         elif opcoes == 12:
@@ -77,22 +78,17 @@ def cadastrar_cliente():
         print(linha())
         print('Cadastro de Cliente'.center(50))
         try:
-            id_cliente = int(input('Digite o ID do Cliente: '))
-        except ValueError:
-            erro('Digite Apenas números inteiros!')
-        else:
             nome = input('Nome: ')
             telefone = input('Telefone: ')
             email = input('Email: ')
             endereco = input('Endereço: ')
+            operadores.inserir_clientes(nome, telefone, email, endereco)
+            sucesso(f'Cliente {nome} cadastrado com sucesso!')
             sleep(1)
-            print(linha())
-            sucesso('Cliente Cadastrado com sucesso!')
-            print(linha())
-            resposta = pergunta_continuar('Deseja cadastrar novo cliente? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
+        except Exception as e:
+            print('Erro ao cadastrar cliente!')
+        if pergunta_continuar('Deseja cadastrar novo cliente? [S/N]: ') == 'n':
+            break
 
 
 def cadastrar_tecnico():
@@ -100,46 +96,33 @@ def cadastrar_tecnico():
         print(linha())
         print('Cadastro de Técnicos'.center(50))
         try:
-            id_tecnico = int(input('Digite o ID do Técnico: '))
-        except ValueError:
-            erro('Digite Apenas números inteiros!')
-        else:
             nome = input('Nome: ')
             telefone = input('Telefone: ')
             especialidade = input('Especialidade: ')
             email = input('Email: ')
-            sleep(1)
-            print(linha())
-            sucesso('Técnico Cadastrado com sucesso!')
-            print(linha())
-            resposta = pergunta_continuar('Deseja cadastrar novo funcionário? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
+            operadores.inserir_tecnico(nome, telefone, especialidade, email)
+        except Exception as e:
+            erro(f'Erro ao cadastrar técnico: {e}')
 
+        if pergunta_continuar('Deseja cadastrar novo técnico? [S/N]: ') == 'n':
+            break
 
 def nova_ordem_servico():
     while True:
         print(linha())
         print('Nova Ordem de Serviço'.center(50))
         try:
-            id_os = int(input('Digite o ID da OS: '))
-            valor_total = float(input('Valor Total: '))
+            cliente_id = int(input('ID do Cliente: '))
+            tecnico_id = int(input('ID do Técnico: '))
+            descricao = input('Descrição: ')
+            operadores.inserir_ordens_servico(cliente_id, tecnico_id, descricao)
         except ValueError:
             erro('Digite apenas números válidos!')
-        else:
-            descricao = input('Descricao: ')
-            data_abertura = input('Data abertura: ')
-            cliente = input('Cliente: ')
-            tecnico = input('Tecnico: ')
-            sleep(1)
-            print(linha())
-            sucesso('Nova ordem de serviço criada!')
-            print(linha())
-            resposta = pergunta_continuar('Deseja cadastrar nova ordem de serviço? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
+        except Exception as e:
+            erro(f'Erro ao criar ordem de serviço: {e}')
+
+        if pergunta_continuar('Deseja criar nova OS? [S/N]: ') == 'n':
+            break
 
 
 def novo_servico():
@@ -147,20 +130,17 @@ def novo_servico():
         print(linha())
         print('Novo Serviço'.center(50))
         try:
-            id_servico = int(input('Digite o ID do serviço: '))
-            preco_base = float(input('Preço Base: '))
-        except ValueError:
-            erro('Digite apenas números válidos!')
-        else:
             nome = input('Nome: ')
-            sleep(1)
-            print(linha())
-            sucesso('Novo serviço criado com sucesso!')
-            print(linha())
-            resposta = pergunta_continuar('Deseja cadastrar novo serviço? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
+            descricao = input('Descrição: ')
+            valor = float(input('Valor: '))
+            operadores.inserir_servico(nome, descricao, valor)
+        except ValueError:
+            erro('Digite um valor numérico válido!')
+        except Exception as e:
+            erro(f'Erro ao cadastrar serviço: {e}')
+
+        if pergunta_continuar('Deseja cadastrar novo serviço? [S/N]: ') == 'n':
+            break
 
 
 def novo_item_os():
@@ -168,131 +148,65 @@ def novo_item_os():
         print(linha())
         print('Novo Item OS'.center(50))
         try:
-            os_id = int(input('ID do Os: '))
-            servico_id = int(input('ID do serviço: '))
+            os_id = int(input('ID da OS: '))
+            servico_id = int(input('ID do Serviço: '))
             quantidade = int(input('Quantidade: '))
-            valor_unitario = float(input('Valor Unitario: '))
+            valor_unitario = float(input('Valor Unitário: '))
+            operadores.inserir_itens_os(os_id, servico_id, quantidade, valor_unitario)
         except ValueError:
             erro('Digite apenas números válidos!')
-        else:
-            sleep(1)
-            print(linha())
-            sucesso('Novo Item OS Criado com sucesso!')
-            print(linha())
-            resposta = pergunta_continuar('Deseja cadastrar novo item OS? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
+        except Exception as e:
+            erro(f'Erro ao criar item OS: {e}')
+
+        if pergunta_continuar('Deseja cadastrar novo item OS? [S/N]: ') == 'n':
+            break
 
 
 def consulta_cliente():
-    while True:
-        print(linha())
-        print('Consulta geral'.center(50))
-        print(linha())
-        try:
-            cliente = int(input('ID do cliente: '))
-        except ValueError:
-            erro('Digite Apenas números inteiros!')
-        else:
-            print(cliente)
-            resposta = pergunta_continuar('Deseja visualizar mais clientes? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
-
+    operadores.ver_clientes()
+    input('Pressione ENTER para voltar ao menu...')
 
 def consulta_tecnico():
-    while True:
-        print(linha())
-        print('Consulta geral'.center(50))
-        print(linha())
-        try:
-            tecnico = int(input('ID do técnico: '))
-        except ValueError:
-            erro('Digite Apenas números inteiros!')
-        else:
-            print(tecnico)
-            resposta = pergunta_continuar('Deseja visualizar mais técnicos? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
-
+    operadores.ver_tecnicos()
+    input('Pressione ENTER para voltar ao menu...')
 
 def consulta_os():
-    while True:
-        print(linha())
-        print('Consulta geral'.center(50))
-        print(linha())
-        try:
-            ordem_servico = int(input('ID do OS: '))
-        except ValueError:
-            erro('Digite Apenas números inteiros!')
-        else:
-            print(ordem_servico)
-            resposta = pergunta_continuar('Deseja visualizar mais ordem de serviço? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
-
+    operadores.ver_ordens_servico()
+    input('Pressione ENTER para voltar ao menu...')
 
 def consulta_servico():
-    while True:
-        print(linha())
-        print('Consulta geral'.center(50))
-        print(linha())
-        try:
-            servico = int(input('ID do Serviço: '))
-        except ValueError:
-            erro('Digite Apenas números inteiros!')
-        else:
-            print(servico)
-            resposta = pergunta_continuar('Deseja visualizar mais serviços? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
-
+    operadores.ver_servicos()
+    input('Pressione ENTER para voltar ao menu...')
 
 def consulta_item_os():
-    while True:
-        print(linha())
-        print('Consulta geral'.center(50))
-        print(linha())
-        try:
-            item_os = int(input('ID do item de OS: '))
-        except ValueError:
-            erro('Digite Apenas números inteiros!')
-        else:
-            print(item_os)
-            resposta = pergunta_continuar('Deseja visualizar mais itens OS? [S/N]: ')
-            if resposta == 'n':
-                print('Muito Obrigado! Volte Sempre!')
-                break
+    operadores.ver_itens_os()
+    input('Pressione ENTER para voltar ao menu...')
 
 
 def apagar_cliente():
     while True:
-        print(linha())
         try:
             id_cliente = int(input('Digite o ID do Cliente que deseja apagar: '))
+            operadores.deletar_cliente(id_cliente)
         except ValueError:
-            erro('Digite Apenas números inteiros!')
-            continue
-        sucesso(f'Cliente {id_cliente} apagado com sucesso!')
-        print(linha())
+            erro('Digite apenas números inteiros!')
+        except Exception as e:
+            erro(f'Erro ao excluir cliente: {e}')
+
         if pergunta_continuar('Deseja apagar outro cliente? [S/N]: ') == 'n':
             break
 
+
 def apagar_servico():
     while True:
-        print(linha())
         try:
             id_servico = int(input('Digite o ID do Serviço que deseja apagar: '))
+            operadores.deletar_servico(id_servico)
         except ValueError:
-            erro('Digite Apenas números inteiros!')
-            continue
-        sucesso(f'Serviço {id_servico} apagado com sucesso!')
-        print(linha())
+            erro('Digite apenas números inteiros!')
+        except Exception as e:
+            erro(f'Erro ao excluir serviço: {e}')
+
         if pergunta_continuar('Deseja apagar outro serviço? [S/N]: ') == 'n':
             break
 
