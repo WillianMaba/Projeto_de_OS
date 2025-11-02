@@ -348,3 +348,86 @@ def atualizar_item_os(id_item, os_id, servico_id, quantidade, valor_unitario):
 
 
 #CRIAÇÃO DAS FUNÇÕES DE DELETAR
+
+
+def deletar_cliente(id_cliente):
+    con = criar_conexao()
+    cur = con.cursor()
+
+    try:
+        cur.execute('''DELETE FROM clientes WHERE id = ?''', (id_cliente,))
+        con.commit()
+        if cur.rowcount > 0:
+            print(f'🗑️ Cliente ID {id_cliente} excluído com sucesso!')
+        else:
+            print(f'⚠️ Nenhum cliente encontrado com ID {id_cliente}.')
+    except Exception as e:
+        print(f'❌ Erro ao excluir cliente:')
+    finally:
+        con.close()
+
+def deletar_tecnico(id_tecnico):
+    con = criar_conexao()
+    cur = con.cursor()
+
+    try:
+        cur.execute('''DELETE FROM tecnicos WHERE id = ?''', (id_tecnico,))
+        con.commit()
+        if cur.rowcount > 0:
+            print(f'🗑️ Técnico ID {id_tecnico} excluído com sucesso!')
+        else:
+            print(f'⚠️ Nenhum técnico encontrado com ID {id_tecnico}.')
+    except Exception as e:
+        print(f'❌ Erro ao excluir técnico:')
+    finally:
+        con.close()
+
+
+def deletar_ordem_servico(id_ordem_servico):
+    con = criar_conexao()
+    cur = con.cursor()
+
+    try:
+        cur.execute('''DELETE FROM ordem_servico WHERE id = ?''', (id_ordem_servico,))
+        con.commit()
+        if cur.rowcount > 0:
+            print(f'🗑️ Ordem de serviço ID {id_ordem_servico} excluído com sucesso!')
+        else:
+            print(f'⚠️ Nenhuma ordem de serviço encontrado com ID {id_ordem_servico}.')
+    except Exception as e:
+        print(f'❌ Erro ao excluir ordem de serviço:')
+    finally:
+        con.close()
+
+
+def deletar_servico(id_servico):
+    con = criar_conexao()
+    cur = con.cursor()
+
+    try:
+        cur.execute('''DELETE FROM servicos WHERE id = ?''', (id_servico,))
+        con.commit()
+        if cur.rowcount > 0:
+            print(f'🗑️ Serviço ID {id_servico} excluído com sucesso!')
+        else:
+            print(f'⚠️ Nenhum serviço encontrado com ID {id_servico}.')
+    except Exception as e:
+        print(f'❌ Erro ao excluir serviço:')
+    finally:
+        con.close()
+
+def deletar_item_os(id_item_os):
+    con = criar_conexao()
+    cur = con.cursor()
+
+    try:
+        cur.execute('''DELETE FROM iten_os WHERE id = ?''', (id_item_os,))
+        con.commit()
+        if cur.rowcount > 0:
+            print(f'🗑️ Itens OS ID {id_item_os} excluído com sucesso!')
+        else:
+            print(f'⚠️ Nenhum item de OS encontrado com ID {id_item_os}.')
+    except Exception as e:
+        print(f'❌ Erro ao excluir item de OS:')
+    finally:
+        con.close()
