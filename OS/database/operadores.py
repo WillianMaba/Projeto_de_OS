@@ -108,7 +108,8 @@ def ver_clientes():
     try:
         cur.execute("SELECT * FROM clientes")
         clientes = cur.fetchall()
-        return clientes  # retorna lista de tuplas
+        return clientes
+        print(ver_clientes())# retorna lista de tuplas
     except Exception as e:
         print("❌ Erro ao buscar clientes:", e)
         return []
@@ -124,6 +125,7 @@ def ver_tecnicos():
         cur.execute("SELECT * FROM tecnicos")
         tecnicos = cur.fetchall()
         return tecnicos
+        print(ver_tecnicos())
     except Exception as e:
         print("❌ Erro ao buscar técnicos:", e)
         return []
@@ -144,6 +146,7 @@ def ver_ordens_servico():
         """)
         ordens = cur.fetchall()
         return ordens
+        print(ver_ordens_servico())
     except Exception as e:
         print("❌ Erro ao buscar ordens de serviço:", e)
         return []
@@ -159,6 +162,7 @@ def ver_servicos():
         cur.execute("SELECT * FROM servicos")
         servicos = cur.fetchall()
         return servicos
+        print(ver_servicos())
     except Exception as e:
         print("❌ Erro ao buscar serviços:", e)
         return []
@@ -179,6 +183,7 @@ def ver_itens_os():
         """)
         itens = cur.fetchall()
         return itens
+        print(ver_itens_os())
     except Exception as e:
         print("❌ Erro ao buscar itens OS:", e)
         return []
