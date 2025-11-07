@@ -10,6 +10,6 @@ Sistema desenvolvido em Python para gerenciamento de ordens de serviço, cliente
 - Criação de novas ordens de serviço
 - Cadastro de serviços e itens de OS
 - Consultas detalhadas por ID
-- Exclusão de clientes e serviços
+- Exclusão de clientes,técnicos, OS, serviços e itens de OS
 - Menu interativo com validação de entradas
 - Feedback colorido no terminal
