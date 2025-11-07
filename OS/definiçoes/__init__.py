@@ -1,7 +1,6 @@
 from OS.Interface import *
 from time import sleep
 from OS.database import operadores, tabelasdb, conexao
-from OS.database.operadores import *
 
 
 def menu():
@@ -20,8 +19,10 @@ def menu():
               '9-Ver Serviços\n'
               '10-Ver Itens OS\n'
               '11-Apagar Clientes\n'
-              '12-Apagar Serviço\n'
-              '13-Apagar Técnico\n'
+              '12-Apagar Técnico\n'
+              '13-Apagar Ordem de Serviço\n'
+              '14-Apagar Serviço\n'
+              '15-Apagar Item de OS\n'
               '0-Sair ')
 
         try:
@@ -53,9 +54,13 @@ def menu():
         elif opcoes == 11:
             apagar_cliente()
         elif opcoes == 12:
-            apagar_servico()
-        elif opcoes == 13:
             apagar_tecnico()
+        elif opcoes == 13:
+            apagar_OS()
+        elif opcoes == 14:
+            apagar_servico()
+        elif opcoes == 15:
+            apagar_item_os()
         elif opcoes == 0:
             print(linha())
             erro('ENCERRANDO PROGRAMA...')
@@ -168,27 +173,22 @@ def novo_item_os():
 
 def consulta_cliente():
     operadores.ver_clientes()
-    print(ver_clientes())
     input('Pressione ENTER para voltar ao menu...')
 
 def consulta_tecnico():
     operadores.ver_tecnicos()
-    print(ver_tecnicos())
     input('Pressione ENTER para voltar ao menu...')
 
 def consulta_os():
     operadores.ver_ordens_servico()
-    print(ver_ordens_servico())
     input('Pressione ENTER para voltar ao menu...')
 
 def consulta_servico():
     operadores.ver_servicos()
-    print(ver_servicos())
     input('Pressione ENTER para voltar ao menu...')
 
 def consulta_item_os():
     operadores.ver_itens_os()
-    print(ver_itens_os())
     input('Pressione ENTER para voltar ao menu...')
 
 
@@ -205,6 +205,32 @@ def apagar_cliente():
         if pergunta_continuar('Deseja apagar outro cliente? [S/N]: ') == 'n':
             break
 
+def apagar_tecnico():
+    while True:
+        try:
+            id_tecnico = int(input('Digite o ID do Técnico que deseja apagar: '))
+            operadores.deletar_tecnico(id_tecnico)
+        except ValueError:
+            erro('Digite apenas números inteiros!')
+        except Exception as e:
+            erro(f'Erro ao excluir técnico: {e}')
+
+        if pergunta_continuar('Deseja apagar outro técnico? [S/N]: ') == 'n':
+            break
+
+def apagar_OS():
+    while True:
+        try:
+            id_OS = int(input('Digite o ID da Ordem de Serviço que deseja apagar: '))
+            operadores.deletar_ordem_servico(id_OS)
+        except ValueError:
+            erro('Digite apenas números inteiros!')
+        except Exception as e:
+            erro(f'Erro ao excluir OS: {e}')
+
+        if pergunta_continuar('Deseja apagar outra Ordem de serviço? [S/N]: ') == 'n':
+            break
+
 
 def apagar_servico():
     while True:
@@ -219,17 +245,16 @@ def apagar_servico():
         if pergunta_continuar('Deseja apagar outro serviço? [S/N]: ') == 'n':
             break
 
-
-def apagar_tecnico():
+def apagar_item_os():
     while True:
         try:
-            id_tecnico = int(input('Digite o ID do Técnico que deseja apagar: '))
-            operadores.deletar_tecnico(id_tecnico)
+            id_item_os = int(input('Digite o ID do Item de Os que deseja apagar: '))
+            operadores.deletar_item_os(id_item_os)
         except ValueError:
             erro('Digite apenas números inteiros!')
         except Exception as e:
-            erro(f'Erro ao excluir técnico: {e}')
+            erro(f'Erro ao excluir Item de Os: {e}')
 
-        if pergunta_continuar('Deseja apagar outro técnico? [S/N]: ') == 'n':
+        if pergunta_continuar('Deseja apagar outro Item de Os? [S/N]: ') == 'n':
             break
 

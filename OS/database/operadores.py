@@ -105,83 +105,146 @@ def inserir_itens_os(os_id, servico_id, quantidade, valor_unitario):
 def ver_clientes():
     con = criar_conexao()
     cur = con.cursor()
+
     try:
         cur.execute("SELECT * FROM clientes")
         clientes = cur.fetchall()
-        return clientes  # retorna lista de tuplas
+
+        if not clientes:
+            print('⚠️ Nenhum cliente encontrado!')
+        else:
+            print(linha())
+            print("LISTA DE CLIENTES")
+            print(linha())
+            for cliente in clientes:
+                print(f"ID: {cliente[0]}")
+                print(f"Nome: {cliente[1]}")
+                print(f"Telefone: {cliente[2]}")
+                print(f"Email: {cliente[3]}")
+                print(f"Endereco: {cliente[4]}")
+                print(linha())
     except Exception as e:
-        print("❌ Erro ao buscar clientes:", e)
-        return []
+        print("❌ Erro ao buscar cliente", e)
     finally:
         con.close()
-
 
 
 def ver_tecnicos():
     con = criar_conexao()
     cur = con.cursor()
+
     try:
         cur.execute("SELECT * FROM tecnicos")
         tecnicos = cur.fetchall()
-        return tecnicos
+
+        if not tecnicos:
+            print('⚠️ Nenhum tecnico encontrado!')
+        else:
+            print(linha())
+            print("LISTA DE TÉCNICOS")
+            print(linha())
+            for tecnico in tecnicos:
+                print(f"ID: {tecnico[0]}")
+                print(f"Nome: {tecnico[1]}")
+                print(f"Telefone: {tecnico[2]}")
+                print(f"Especialidade: {tecnico[3]}")
+                print(f"Email: {tecnico[4]}")
+                print(linha())
     except Exception as e:
-        print("❌ Erro ao buscar técnicos:", e)
-        return []
+        print("❌ Erro ao buscar técnico", e)
     finally:
         con.close()
-
 
 
 def ver_ordens_servico():
     con = criar_conexao()
     cur = con.cursor()
+
     try:
-        cur.execute("""
-            SELECT os.id, c.nome, t.nome, os.descricao, os.data
-            FROM ordens_servico os
-            JOIN clientes c ON os.cliente_id = c.id
-            JOIN tecnicos t ON os.tecnico_id = t.id
-        """)
+        cur.execute('''SELECT os.id,c.nome AS cliente,t.nome AS tecnico,os.descricao,os.data_abertura,os.data_conclusao
+                       FROM ordens_servico AS os
+                       LEFT JOIN clientes AS c ON os.cliente_id = c.id
+                       LEFT JOIN tecnicos AS t ON os.tecnico_id = t.id
+                       ORDER BY os.id
+                    ''')
         ordens = cur.fetchall()
-        return ordens
+
+        if not ordens:
+            print("⚠️ Nenhuma ordem de serviço encontrada.")
+        else:
+            print(linha())
+            print("LISTA DE ORDENS DE SERVIÇO")
+            print(linha())
+            for ordem in ordens:
+                print(linha())
+                print(f"ID OS: {ordem[0]}")
+                print(f"Cliente: {ordem[1]}")
+                print(f"Técnico: {ordem[2]}")
+                print(f"Descrição: {ordem[3]}")
+                print(f"Data de Abertura: {ordem[4]}")
+                print(f"Data de Conclusão: {ordem[5] if ordem[5] else 'Em aberto'}")
+                print(linha())
     except Exception as e:
         print("❌ Erro ao buscar ordens de serviço:", e)
-        return []
     finally:
         con.close()
-
 
 
 def ver_servicos():
     con = criar_conexao()
     cur = con.cursor()
+
     try:
         cur.execute("SELECT * FROM servicos")
         servicos = cur.fetchall()
-        return servicos
+
+        if not servicos:
+            print('⚠️ Nenhum serviço encontrado!')
+        else:
+            print(linha())
+            print("LISTA DE SERVIÇOS")
+            print(linha())
+            for servico in servicos:
+                print(f"ID: {servico[0]}")
+                print(f"Nome: {servico[1]}")
+                print(f"Descricao: {servico[2]}")
+                print(f"Valor: {servico[3]:.2f}")
+                print(linha())
     except Exception as e:
-        print("❌ Erro ao buscar serviços:", e)
-        return []
+        print("❌ Erro ao buscar serviço!")
     finally:
         con.close()
-
 
 
 def ver_itens_os():
     con = criar_conexao()
     cur = con.cursor()
+
     try:
-        cur.execute("""
-            SELECT i.id, os.id, s.nome, i.quantidade, i.valor_unitario
-            FROM itens_os i
-            JOIN ordens_servico os ON i.os_id = os.id
-            JOIN servicos s ON i.servico_id = s.id
-        """)
+        cur.execute('''SELECT ios.id,ios.os_id,s.descricao AS servico,ios.quantidade,ios.valor_unitario,(ios.quantidade * ios.valor_unitario) AS total_item
+                       FROM itens_os AS ios
+                       LEFT JOIN servicos AS s ON ios.servico_id = s.id
+                       ORDER BY ios.os_id
+                    ''')
+
         itens = cur.fetchall()
-        return itens
+
+        if not itens:
+            print("⚠️ Nenhum item de ordem de serviço encontrado.")
+        else:
+            print(linha())
+            print("ITENS DE ORDEM DE SERVIÇO")
+            print(linha())
+            for item in itens:
+                print(f"ID Item: {item[0]}")
+                print(f"OS ID: {item[1]}")
+                print(f"Serviço: {item[2]}")
+                print(f"Quantidade: {item[3]}")
+                print(f"Valor Unitário: R$ {item[4]:.2f}" if item[4] else "Valor Unitário: -")
+                print(linha())
+
     except Exception as e:
-        print("❌ Erro ao buscar itens OS:", e)
-        return []
+        print("❌ Erro ao buscar itens da OS:", e)
     finally:
         con.close()
 
