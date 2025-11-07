@@ -1,6 +1,7 @@
 from OS.Interface import *
 from time import sleep
 from OS.database import operadores, tabelasdb, conexao
+from OS.database.operadores import *
 
 
 def menu():
@@ -167,22 +168,27 @@ def novo_item_os():
 
 def consulta_cliente():
     operadores.ver_clientes()
+    print(ver_clientes())
     input('Pressione ENTER para voltar ao menu...')
 
 def consulta_tecnico():
     operadores.ver_tecnicos()
+    print(ver_tecnicos())
     input('Pressione ENTER para voltar ao menu...')
 
 def consulta_os():
     operadores.ver_ordens_servico()
+    print(ver_ordens_servico())
     input('Pressione ENTER para voltar ao menu...')
 
 def consulta_servico():
     operadores.ver_servicos()
+    print(ver_servicos())
     input('Pressione ENTER para voltar ao menu...')
 
 def consulta_item_os():
     operadores.ver_itens_os()
+    print(ver_itens_os())
     input('Pressione ENTER para voltar ao menu...')
 
 

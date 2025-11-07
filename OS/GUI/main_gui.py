@@ -1,7 +1,7 @@
 import tkinter as tk
 from OS.GUI import cliente_gui, tecnico_gui, servico_gui, os_gui
 
-root = tk.Tk(); root.title("Sistema de OS"); root.geometry("400x450")
+root = tk.Tk(); root.title("Sistema de OS"); root.geometry("400x650")
 
 tk.Label(root, text="Sistema de OS", font=("Arial",20)).pack(pady=20)
 tk.Button(root, text="Cadastrar Cliente", width=30, command=cliente_gui.tela_cadastro_cliente).pack(pady=5)
